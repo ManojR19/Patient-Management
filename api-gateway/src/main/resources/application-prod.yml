@@ -1,0 +1,26 @@
+spring:
+  cloud:
+    gateway:
+      routes:
+
+        - id: auth-service
+          uri: http://172.17.0.1:4005
+          predicates:
+            - Path=/auth/**
+          filters:
+            - StripPrefix=1
+
+        - id: patient-service
+          uri: http://172.17.0.1:4000
+          predicates:
+            - Path=/api/patients, /api/patients/**
+          filters:
+            - RewritePath=/api/(?<segment>.*), /${segment}
+            - JwtValidation
+
+        - id: billing-service
+          uri: http://172.17.0.1:4001
+          predicates:
+            - Path=/billing/**
+          filters:
+            - StripPrefix=1
