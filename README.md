@@ -1,22 +1,43 @@
 # Patient-Management System
 
-A scalable **Patient Management System** built using **Spring Boot microservices architecture** and cloud infrastructure simulated with **AWS CDK and LocalStack**. The system demonstrates modern backend architecture patterns, including API Gateway routing, JWT-based authentication, service-to-service communication using gRPC, and event-driven processing with Kafka.
+A scalable **Patient Management System** built using **Spring Boot microservices architecture** and cloud infrastructure simulated with **AWS CDK and LocalStack**. The project demonstrates real-world backend architecture patterns such as API Gateway routing, JWT-based authentication, gRPC communication, and event-driven services using Kafka.
 
 ---
 
-## Architecture Overview
+## Architecture Diagram
 
-The system is designed as a distributed microservices platform with multiple independent services communicating through REST and gRPC.
+![System Architecture](docs/architecture.png)
 
-Main components include:
+The system is deployed using a **container-based architecture on AWS ECS-style infrastructure**.
 
-* API Gateway – Handles centralized routing of client requests
-* Authentication Service – Provides JWT token-based authentication and authorization
-* Patient Service – Manages patient records and operations
-* Billing Service – Handles billing operations using gRPC communication
-* Analytics Service – Processes analytical data using event-driven architecture
+### Key Flow
 
-The infrastructure is simulated locally using **AWS CDK with LocalStack**, mimicking real AWS services such as container orchestration and networking.
+1. Client requests enter through an **Application Load Balancer (ALB)**.
+2. Requests are routed to the **API Gateway service**.
+3. API Gateway validates **JWT tokens** and forwards requests to microservices.
+4. Services communicate with each other using **REST and gRPC**.
+5. **Patient Service publishes events to Kafka**.
+6. **Analytics Service consumes Kafka events** for processing.
+7. Each service stores data in **PostgreSQL databases hosted in RDS**.
+
+---
+
+## Microservices
+
+* **API Gateway Service**
+  Handles request routing and security validation.
+
+* **Auth Service**
+  Provides JWT token-based authentication and authorization.
+
+* **Patient Service**
+  Manages patient records and publishes patient events to Kafka.
+
+* **Billing Service**
+  Handles billing operations using **gRPC communication**.
+
+* **Analytics Service**
+  Consumes Kafka events and performs analytical processing.
 
 ---
 
@@ -31,122 +52,65 @@ The infrastructure is simulated locally using **AWS CDK with LocalStack**, mimic
 
 **Security**
 
-* JWT Token-based Authentication
+* JWT Authentication
 
 **Infrastructure**
 
 * AWS CDK
 * LocalStack
 * Docker
-* ECS Fargate-style architecture
+* ECS-style container deployment
 
-**Messaging & Communication**
+**Messaging**
 
 * Apache Kafka
-* REST APIs
-* gRPC
 
 **Database**
 
-* PostgreSQL
+* PostgreSQL (RDS style)
 
 **Testing**
 
 * Integration Testing
-* Service-level Test Cases
+* Service-level test cases
 
 ---
 
 ## Key Features
 
-* Microservices-based architecture
-* Secure login using **JWT token authentication**
-* **API Gateway** for centralized routing and request handling
-* Service-to-service communication using **gRPC**
-* Event-driven architecture using **Apache Kafka**
-* Containerized services using **Docker**
-* Cloud infrastructure simulated using **AWS CDK + LocalStack**
-* **Integration tests and test cases** implemented for validating service interactions
-
----
-
-## Project Structure
-
-```
-patient-management
-│
-├── api-gateway
-├── auth-service
-├── patient-service
-├── billing-service
-├── analytics-service
-├── infrastructure (AWS CDK + LocalStack)
-└── docker
-```
+* Microservices architecture
+* JWT-based secure login
+* API Gateway centralized routing
+* Service-to-service communication using gRPC
+* Event-driven architecture using Kafka
+* Containerized services with Docker
+* Cloud infrastructure simulation using AWS CDK + LocalStack
+* Integration tests validating service interactions
 
 ---
 
 ## Running the Project
 
-### 1. Clone the Repository
+Clone the repository:
 
-```
+```bash
 git clone https://github.com/ManojR19/Patient-Management.git
 ```
 
-### 2. Start Local Infrastructure
+Start infrastructure:
 
-```
+```bash
 docker compose up
 ```
 
-### 3. Deploy Infrastructure using CDK
+Deploy infrastructure:
 
-```
+```bash
 cd infrastructure
 cdk deploy
 ```
 
-### 4. Run Services
-
-Start each microservice individually using Maven or your IDE.
-
----
-
-## API Security
-
-The system uses **JWT (JSON Web Token)** based authentication.
-
-Flow:
-
-1. User logs in via Auth Service
-2. Auth Service generates JWT token
-3. Client sends JWT token with each request
-4. API Gateway validates token before routing request to services
-
----
-
-## Testing
-
-Integration tests are implemented to validate:
-
-* Service-to-service communication
-* API endpoints
-* Authentication and authorization flows
-* Billing service gRPC interactions
-
----
-
-## Learning Objectives
-
-This project demonstrates:
-
-* Microservices architecture design
-* Secure API development
-* Distributed system communication
-* Cloud infrastructure simulation
-* Event-driven system design
-* Integration testing in microservices
+Run the services individually.
 
 ---
 
